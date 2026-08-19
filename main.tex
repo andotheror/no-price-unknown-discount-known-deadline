@@ -27,11 +27,7 @@
 \maketitle
 
 \begin{abstract}
-Discounted regret evaluates an online learner with exponentially larger weight on recent losses. If the discount factor is known, online gradient descent attains regret of order $DG/\sqrt{1-\lambda}$. A recent result adapts to an unknown discount factor over a continuum at an extra factor $\sqrt{\log T}$, using a logarithmic collection of experts and discounted meta-algorithms. We show that this adaptivity cost vanishes when the terminal horizon $T$ is known. One projected-gradient iterate with the increasing step sizes $\eta_t=D/(G\sqrt{2(T-t+1)})$, chosen without $\lambda$, satisfies simultaneously for every $\lambda\in[0,1]$
-\[
-\DReg_T(\lambda)\le \sqrt2DG\sqrt{\frac{1-\lambda^T}{1-\lambda}},
-\]
-where the ratio is $T$ at $\lambda=1$. For every fixed $\lambda$, even an algorithm told $\lambda$ has minimax expected regret at least $1/(4\sqrt2)$ of this upper bound. Thus a single discount-oblivious trajectory is pointwise minimax for the entire continuum, including effective horizons from one to $T$. The mechanism is a terminal-suffix principle. Increasing step sizes make every suffix ending at the known deadline regret-optimal. Abel summation expresses any exponential discount as a probability mixture of these suffixes, and Jensen's inequality produces the exact finite-horizon effective scale. The same argument applies to mirror descent and to every nonincreasing terminal weighting kernel. Besides closing the logarithmic gap, the result reduces the number of learner states and per-round updates from $O(\log T)$ to one.
+Discounted regret evaluates an online learner with exponentially larger weight on recent losses. If the discount factor is known, online gradient descent attains regret of order $DG/\sqrt{1-\lambda}$. A recent result adapts to an unknown discount factor over a continuum at an extra factor $\sqrt{\log T}$, using a logarithmic collection of experts and discounted meta-algorithms. We show that this adaptivity cost vanishes when the terminal horizon $T$ is known. One projected-gradient iterate with the increasing step sizes $\eta_t=D/(G\sqrt{2(T-t+1)})$, chosen without $\lambda$, satisfies simultaneously for every $\lambda\in[0,1]$ \[ \DReg_T(\lambda)\le \sqrt2DG\sqrt{\frac{1-\lambda^T}{1-\lambda}}, \] where the ratio is $T$ at $\lambda=1$. For every fixed $\lambda$, even an algorithm told $\lambda$ has minimax expected regret at least $1/(4\sqrt2)$ of this upper bound. Thus a single discount-oblivious trajectory is pointwise minimax for the entire continuum, including effective horizons from one to $T$. The mechanism is a terminal-suffix principle. Increasing step sizes make every suffix ending at the known deadline regret-optimal. Abel summation expresses any exponential discount as a probability mixture of these suffixes, and Jensen's inequality produces the exact finite-horizon effective scale. The same argument applies to mirror descent and to every nonincreasing terminal weighting kernel. Besides closing the logarithmic gap, the result reduces the number of learner states and per-round updates from $O(\log T)$ to one.
 \end{abstract}
 
 \section{Introduction}
@@ -97,11 +93,7 @@ The suffix-mixture argument is not specific to Euclidean projection or exponenti
 
 Let $\W$ be a nonempty closed convex subset of a Euclidean space with diameter at most $D$. In round $t$, the learner selects $w_t\in\W$. The environment then reveals a convex loss $f_t:\W\to\mathbb R$ and a subgradient $g_t\in\partial f_t(w_t)$ satisfying $\|g_t\|_2\le G$. The loss sequence may be adaptive to past decisions. The learner knows a terminal horizon $T$ before round one. We assume $D,G>0$, since either zero case is immediate.
 
-For a comparator $u\in\W$, define the discounted linearized regret
-\[
-R_T(\lambda,u):=\sum_{t=1}^T\lambda^{T-t}\bigl(f_t(w_t)-f_t(u)\bigr).
-\]
-Convexity gives the standard reduction to subgradients, but our final guarantee is stated directly for the convex losses. Since $\DReg_T(\lambda)=\max_{u\in\W}R_T(\lambda,u)$, a bound uniform in $u$ controls~\eqref{eq:dreg}.
+For a comparator $u\in\W$, define the discounted linearized regret \[ R_T(\lambda,u):=\sum_{t=1}^T\lambda^{T-t}\bigl(f_t(w_t)-f_t(u)\bigr). \] Convexity gives the standard reduction to subgradients, but our final guarantee is stated directly for the convex losses. Since $\DReg_T(\lambda)=\max_{u\in\W}R_T(\lambda,u)$, a bound uniform in $u$ controls~\eqref{eq:dreg}.
 
 Table~\ref{tab:comparison} compares the closest worst-case guarantees. The known-factor row follows from tuned constant-step OGD~\citep{zhang2024discounted,yang2026uniform}. The prior uniform row is Smoothed OGD~\citep{yang2026uniform}. Constants and the lower endpoint imposed there are omitted to emphasize the rates. Our bound holds on the larger closed interval $[0,1]$ and retains the exact finite-horizon effective length $H_T(\lambda)$.
 
@@ -147,11 +139,7 @@ We begin with the property that does all of the work.
 
 \begin{lemma}[Every terminal suffix]
 \label{lem:suffix}
-For every comparator $u\in\W$ and every starting time $s\in[T]$, Algorithm~\ref{alg:deadline} satisfies
-\[
-\sum_{t=s}^T\bigl(f_t(w_t)-f_t(u)\bigr)\le\sqrt2DG\sqrt{T-s+1}.
-\]
-The inequalities hold simultaneously for all $s$ and $u$ on every loss sequence.
+For every comparator $u\in\W$ and every starting time $s\in[T]$, Algorithm~\ref{alg:deadline} satisfies \[ \sum_{t=s}^T\bigl(f_t(w_t)-f_t(u)\bigr)\le\sqrt2DG\sqrt{T-s+1}. \] The inequalities hold simultaneously for all $s$ and $u$ on every loss sequence.
 \end{lemma}
 
 \begin{proof}
@@ -165,10 +153,7 @@ Summing from $s$ to $T$ gives
 \sum_{t=s}^T(f_t(w_t)-f_t(u))
 &\le \frac{A_s}{2\eta_s}+\frac12\sum_{t=s+1}^TA_t\left(\frac1{\eta_t}-\frac1{\eta_{t-1}}\right)-\frac{A_{T+1}}{2\eta_T}+\frac{G^2}{2}\sum_{t=s}^T\eta_t.\label{eq:telescope}
 \end{align}
-The schedule $\eta_t$ is nondecreasing, so the middle coefficients and the final distance term are nonpositive. Write $\ell=T-s+1$. Since $A_s\le D^2$ and $\sum_{j=1}^{\ell}j^{-1/2}\le2\sqrt\ell$,
-\[
-\sum_{t=s}^T(f_t(w_t)-f_t(u))\le\frac{D^2}{2\eta_s}+\frac{G^2}{2}\sum_{t=s}^T\eta_t\le\frac{DG\sqrt\ell}{\sqrt2}+\frac{DG\sqrt\ell}{\sqrt2}=\sqrt2DG\sqrt\ell.
-\]
+The schedule $\eta_t$ is nondecreasing, so the middle coefficients and the final distance term are nonpositive. Write $\ell=T-s+1$. Since $A_s\le D^2$ and $\sum_{j=1}^{\ell}j^{-1/2}\le2\sqrt\ell$, \[ \sum_{t=s}^T(f_t(w_t)-f_t(u))\le\frac{D^2}{2\eta_s}+\frac{G^2}{2}\sum_{t=s}^T\eta_t\le\frac{DG\sqrt\ell}{\sqrt2}+\frac{DG\sqrt\ell}{\sqrt2}=\sqrt2DG\sqrt\ell. \]
 \end{proof}
 
 More generally, the schedule $\eta_t=cD/(G\sqrt{T-t+1})$ gives suffix constant $c+1/(2c)$. The choice $c=1/\sqrt2$ in Algorithm~\ref{alg:deadline} minimizes this expression and yields $\sqrt2$.
@@ -201,18 +186,10 @@ Consequently, the same bound holds for $\DReg_T(\lambda)$ simultaneously for eve
 \end{theorem}
 
 \begin{proof}
-Fix $u$ and apply Lemma~\ref{lem:abel} to $r_t=f_t(w_t)-f_t(u)$. Lemma~\ref{lem:suffix} bounds $S_j\le\sqrt2DG\sqrt j$ for every $j$. With the random suffix length $J$ from Lemma~\ref{lem:abel},
-\[
-R_T(\lambda,u)\le\sqrt2DG\E[\sqrt J]\le\sqrt2DG\sqrt{\E[J]}=\sqrt2DG\sqrt{H_T(\lambda)},
-\]
-where the second inequality is Jensen's inequality. No step depends on $\lambda$, so the statement holds for the continuum simultaneously. Maximizing over $u$ proves the discounted-regret claim.
+Fix $u$ and apply Lemma~\ref{lem:abel} to $r_t=f_t(w_t)-f_t(u)$. Lemma~\ref{lem:suffix} bounds $S_j\le\sqrt2DG\sqrt j$ for every $j$. With the random suffix length $J$ from Lemma~\ref{lem:abel}, \[ R_T(\lambda,u)\le\sqrt2DG\E[\sqrt J]\le\sqrt2DG\sqrt{\E[J]}=\sqrt2DG\sqrt{H_T(\lambda)}, \] where the second inequality is Jensen's inequality. No step depends on $\lambda$, so the statement holds for the continuum simultaneously. Maximizing over $u$ proves the discounted-regret claim.
 \end{proof}
 
-The finite-horizon form matters near $\lambda=1$. Since
-\[
-H_T(\lambda)\le\min\left\{T,\frac1{1-\lambda}\right\},
-\]
-Theorem~\ref{thm:upper} implies the familiar $O(DG/\sqrt{1-\lambda})$ rate and never exceeds ordinary $O(DG\sqrt T)$ regret. At $\lambda=0$, only the last loss is evaluated and the bound is $\sqrt2DG$.
+The finite-horizon form matters near $\lambda=1$. Since \[ H_T(\lambda)\le\min\left\{T,\frac1{1-\lambda}\right\}, \] Theorem~\ref{thm:upper} implies the familiar $O(DG/\sqrt{1-\lambda})$ rate and never exceeds ordinary $O(DG\sqrt T)$ regret. At $\lambda=0$, only the last loss is evaluated and the bound is $\sqrt2DG$.
 
 \section{The rate is pointwise minimax}
 \label{sec:lower}
@@ -230,29 +207,17 @@ The result continues to hold if the algorithm knows $\lambda$ before play.
 \end{theorem}
 
 \begin{proof}
-Let $\varepsilon_1,\ldots,\varepsilon_T$ be independent Rademacher variables and set $f_t(w)=G\varepsilon_tw$. Adding the constant $GD/2$ to every $f_t$ places all losses in $[0,GD]$ without changing regret. A learner's $w_t$ is measurable with respect to its internal randomness and $\varepsilon_1,\ldots,\varepsilon_{t-1}$. Thus its expected weighted loss is zero before the harmless shift. The best comparator has weighted loss
-\[
-\min_{u\in[-D/2,D/2]}Gu\sum_{t=1}^T\lambda^{T-t}\varepsilon_t=-\frac{DG}{2}\left|\sum_{t=1}^T\lambda^{T-t}\varepsilon_t\right|.
-\]
-The sharp $p=1$ Khintchine inequality~\citep{haagerup1981best} and independence yield
+Let $\varepsilon_1,\ldots,\varepsilon_T$ be independent Rademacher variables and set $f_t(w)=G\varepsilon_tw$. Adding the constant $GD/2$ to every $f_t$ places all losses in $[0,GD]$ without changing regret. A learner's $w_t$ is measurable with respect to its internal randomness and $\varepsilon_1,\ldots,\varepsilon_{t-1}$. Thus its expected weighted loss is zero before the harmless shift. The best comparator has weighted loss \[ \min_{u\in[-D/2,D/2]}Gu\sum_{t=1}^T\lambda^{T-t}\varepsilon_t=-\frac{DG}{2}\left|\sum_{t=1}^T\lambda^{T-t}\varepsilon_t\right|. \] The sharp $p=1$ Khintchine inequality~\citep{haagerup1981best} and independence yield
 \begin{align}
 \E[\DReg_T(\lambda)]
 &\ge\frac{DG}{2\sqrt2}\sqrt{\sum_{j=0}^{T-1}\lambda^{2j}}.
 \end{align}
-Finally,
-\[
-\sum_{j=0}^{T-1}\lambda^{2j}=H_T(\lambda)\frac{1+\lambda^T}{1+\lambda}\ge\frac12H_T(\lambda).
-\]
-Combining the two displays proves~\eqref{eq:lower}. The argument conditions on any internal random seed, so it applies to randomized algorithms and to algorithms that use $\lambda$.
+Finally, \[ \sum_{j=0}^{T-1}\lambda^{2j}=H_T(\lambda)\frac{1+\lambda^T}{1+\lambda}\ge\frac12H_T(\lambda). \] Combining the two displays proves~\eqref{eq:lower}. The argument conditions on any internal random seed, so it applies to randomized algorithms and to algorithms that use $\lambda$.
 \end{proof}
 
 \begin{corollary}[Zero adaptivity price]
 \label{cor:minimax}
-Let $V_T(\lambda)$ be the minimax expected discounted regret when $\lambda$ is revealed before play. For every $\lambda\in[0,1]$,
-\[
-\frac14DG\sqrt{H_T(\lambda)}\le V_T(\lambda)\le\sqrt2DG\sqrt{H_T(\lambda)}.
-\]
-Algorithm~\ref{alg:deadline}, which is not told $\lambda$, attains the upper bound for all $\lambda$ simultaneously.
+Let $V_T(\lambda)$ be the minimax expected discounted regret when $\lambda$ is revealed before play. For every $\lambda\in[0,1]$, \[ \frac14DG\sqrt{H_T(\lambda)}\le V_T(\lambda)\le\sqrt2DG\sqrt{H_T(\lambda)}. \] Algorithm~\ref{alg:deadline}, which is not told $\lambda$, attains the upper bound for all $\lambda$ simultaneously.
 \end{corollary}
 
 This is stronger than selecting one tuning after the fact. A single sequence $(w_t)_{t=1}^T$ competes, within a universal constant of the oracle minimax value, under uncountably many objectives. No union bound, discretization, or confidence parameter appears because Theorem~\ref{thm:upper} is deterministic.
@@ -285,10 +250,7 @@ Thus the kernel may also be chosen after the losses. Exponential discounting tak
 
 \begin{proposition}[Fixed-kernel lower bound]
 \label{prop:kernellower}
-Fix any nonnegative terminal weights $a_1,\ldots,a_T$. Even if these weights are revealed before play, every online algorithm has worst-case expected weighted regret at least
-\[
-\frac{DG}{2\sqrt2}\left(\sum_{j=1}^Ta_j^2\right)^{1/2}.
-\]
+Fix any nonnegative terminal weights $a_1,\ldots,a_T$. Even if these weights are revealed before play, every online algorithm has worst-case expected weighted regret at least \[ \frac{DG}{2\sqrt2}\left(\sum_{j=1}^Ta_j^2\right)^{1/2}. \]
 \end{proposition}
 
 \begin{proof}
@@ -297,11 +259,7 @@ Use the Rademacher linear losses from Theorem~\ref{thm:lower}, now with coeffici
 
 The upper bound in Theorem~\ref{thm:kernel} depends on $\|a\|_1^{1/2}$, while Proposition~\ref{prop:kernellower} depends on $\|a\|_2$. These scales are equivalent up to a constant for geometric kernels because $H_T(\lambda)\le2\sum_{j=0}^{T-1}\lambda^{2j}$. This is why Corollary~\ref{cor:minimax} is sharp. They need not be equivalent for every slowly decaying kernel, so we do not claim pointwise minimaxity for all of~\eqref{eq:kernel}.
 
-The Euclidean update is also inessential. Let $\|\cdot\|$ be a norm with dual norm $\|\cdot\|_*$, and let $\psi$ be one-strongly convex on $\W$. Assume its Bregman divergence satisfies
-\[
-\sup_{u,w\in\W}D_\psi(u,w)\le\frac{B^2}{2}.
-\]
-Online mirror descent uses
+The Euclidean update is also inessential. Let $\|\cdot\|$ be a norm with dual norm $\|\cdot\|_*$, and let $\psi$ be one-strongly convex on $\W$. Assume its Bregman divergence satisfies \[ \sup_{u,w\in\W}D_\psi(u,w)\le\frac{B^2}{2}. \] Online mirror descent uses
 \begin{equation}
 w_{t+1}\in\arg\min_{w\in\W}\left\{\eta_t\langle g_t,w\rangle+D_\psi(w,w_t)\right\},
 \qquad
@@ -348,26 +306,14 @@ f_t(w_t)-f_t(u)\le\langle g_t,w_t-u\rangle
 \le\frac{D_\psi(u,w_t)-D_\psi(u,w_{t+1})}{\eta_t}+\frac{\eta_t}{2}\|g_t\|_*^2.
 \label{eq:mirrorone}
 \end{equation}
-For completeness, the optimality condition for~\eqref{eq:omd} and the three-point Bregman identity imply
-\[
-\eta_t\langle g_t,w_{t+1}-u\rangle\le D_\psi(u,w_t)-D_\psi(u,w_{t+1})-D_\psi(w_{t+1},w_t).
-\]
-Add $\eta_t\langle g_t,w_t-w_{t+1}\rangle$. One-strong convexity gives $D_\psi(w_{t+1},w_t)\ge\|w_{t+1}-w_t\|^2/2$, and Fenchel--Young gives
-\[
-\eta_t\langle g_t,w_t-w_{t+1}\rangle-\frac12\|w_t-w_{t+1}\|^2\le\frac{\eta_t^2}{2}\|g_t\|_*^2.
-\]
-Dividing by $\eta_t$ proves~\eqref{eq:mirrorone}.
+For completeness, the optimality condition for~\eqref{eq:omd} and the three-point Bregman identity imply \[ \eta_t\langle g_t,w_{t+1}-u\rangle\le D_\psi(u,w_t)-D_\psi(u,w_{t+1})-D_\psi(w_{t+1},w_t). \] Add $\eta_t\langle g_t,w_t-w_{t+1}\rangle$. One-strong convexity gives $D_\psi(w_{t+1},w_t)\ge\|w_{t+1}-w_t\|^2/2$, and Fenchel--Young gives \[ \eta_t\langle g_t,w_t-w_{t+1}\rangle-\frac12\|w_t-w_{t+1}\|^2\le\frac{\eta_t^2}{2}\|g_t\|_*^2. \] Dividing by $\eta_t$ proves~\eqref{eq:mirrorone}.
 
 Write $V_t=D_\psi(u,w_t)$. Summing~\eqref{eq:mirrorone} from $s$ through $T$ gives
 \begin{align}
 \sum_{t=s}^T(f_t(w_t)-f_t(u))
 &\le\frac{V_s}{\eta_s}+\sum_{t=s+1}^TV_t\left(\frac1{\eta_t}-\frac1{\eta_{t-1}}\right)-\frac{V_{T+1}}{\eta_T}+\frac{G^2}{2}\sum_{t=s}^T\eta_t.
 \end{align}
-Both terms after $V_s/\eta_s$ involving divergences are nonpositive because $V_t\ge0$ and $\eta_t$ is nondecreasing. With $\ell=T-s+1$, the Bregman-diameter assumption and the same inverse-square-root sum used in Lemma~\ref{lem:suffix} give
-\[
-\sum_{t=s}^T(f_t(w_t)-f_t(u))\le\frac{B^2}{2\eta_s}+\frac{G^2}{2}\sum_{t=s}^T\eta_t\le\sqrt2BG\sqrt\ell.
-\]
-Lemmas~\ref{lem:abel} and Theorem~\ref{thm:kernel} are algebraic and therefore apply unchanged.
+Both terms after $V_s/\eta_s$ involving divergences are nonpositive because $V_t\ge0$ and $\eta_t$ is nondecreasing. With $\ell=T-s+1$, the Bregman-diameter assumption and the same inverse-square-root sum used in Lemma~\ref{lem:suffix} give \[ \sum_{t=s}^T(f_t(w_t)-f_t(u))\le\frac{B^2}{2\eta_s}+\frac{G^2}{2}\sum_{t=s}^T\eta_t\le\sqrt2BG\sqrt\ell. \] Lemmas~\ref{lem:abel} and Theorem~\ref{thm:kernel} are algebraic and therefore apply unchanged.
 
 \section{A general terminal-mixture principle}
 \label{app:mixture}
@@ -395,32 +341,14 @@ For the exponential kernel, Proposition~\ref{prop:profile} gives a probabilistic
 \section{Lower-bound details and constants}
 \label{app:lower}
 
-We record three details about Theorem~\ref{thm:lower}. First, the loss distribution is oblivious. It therefore lower bounds algorithms against both oblivious and adaptive loss classes. Second, the learner may randomize. Conditional on its random seed and the past, $\varepsilon_t$ has zero mean, so
-\[
-\E\left[\sum_{t=1}^T\lambda^{T-t}G\varepsilon_tw_t\right]=0.
-\]
-Third, the expectation lower bound implies a worst-case sequence lower bound for expected regret by averaging over the Rademacher distribution.
+We record three details about Theorem~\ref{thm:lower}. First, the loss distribution is oblivious. It therefore lower bounds algorithms against both oblivious and adaptive loss classes. Second, the learner may randomize. Conditional on its random seed and the past, $\varepsilon_t$ has zero mean, so \[ \E\left[\sum_{t=1}^T\lambda^{T-t}G\varepsilon_tw_t\right]=0. \] Third, the expectation lower bound implies a worst-case sequence lower bound for expected regret by averaging over the Rademacher distribution.
 
-The only external inequality used is
-\[
-\E\left|\sum_{j=1}^Tc_j\varepsilon_j\right|\ge\frac1{\sqrt2}\left(\sum_{j=1}^Tc_j^2\right)^{1/2}.
-\]
-With $c_j=\lambda^{j-1}$, its squared norm is
-\[
-Q_T(\lambda)=\sum_{j=0}^{T-1}\lambda^{2j}=
+The only external inequality used is \[ \E\left|\sum_{j=1}^Tc_j\varepsilon_j\right|\ge\frac1{\sqrt2}\left(\sum_{j=1}^Tc_j^2\right)^{1/2}. \] With $c_j=\lambda^{j-1}$, its squared norm is \[ Q_T(\lambda)=\sum_{j=0}^{T-1}\lambda^{2j}=
 \begin{cases}
 (1-\lambda^{2T})/(1-\lambda^2),&\lambda<1,\\
 T,&\lambda=1.
 \end{cases}
-\]
-For every $\lambda\in[0,1]$,
-\[
-\frac{Q_T(\lambda)}{H_T(\lambda)}=\frac{1+\lambda^T}{1+\lambda}\in\left[\frac12,2\right].
-\]
-In fact the ratio is at most one for $T\ge1$, but the lower inequality is the direction needed in the theorem. The constants then combine as
-\[
-\frac{DG}{2}\cdot\frac1{\sqrt2}\cdot\sqrt{\frac{H_T(\lambda)}2}=\frac14DG\sqrt{H_T(\lambda)}.
-\]
+\] For every $\lambda\in[0,1]$, \[ \frac{Q_T(\lambda)}{H_T(\lambda)}=\frac{1+\lambda^T}{1+\lambda}\in\left[\frac12,2\right]. \] In fact the ratio is at most one for $T\ge1$, but the lower inequality is the direction needed in the theorem. The constants then combine as \[ \frac{DG}{2}\cdot\frac1{\sqrt2}\cdot\sqrt{\frac{H_T(\lambda)}2}=\frac14DG\sqrt{H_T(\lambda)}. \]
 
 \section{Endpoint and stopping-time checks}
 \label{app:endpoints}
